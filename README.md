@@ -14,7 +14,9 @@ This Next.js dashboard is the operational cockpit for the ACSSZ EzClaim reimburs
 pnpm install
 pnpm dev
 ```
-Set `API_BASE_URL` (or `NEXT_PUBLIC_API_BASE_URL`) if the backend does not run on `http://localhost:8080`.
+Development defaults to the API at `http://localhost:8080`; production builds fall back to
+`https://ezclaim.liuzisen.com`. Override via `API_BASE_URL` or `NEXT_PUBLIC_API_BASE_URL` in
+`.env.local`/`.env.production` to point elsewhere.
 
 ## License
 Licensed under the Do What The Fuck You Want To Public License (WTFPL). See [`LICENCE`](LICENCE).

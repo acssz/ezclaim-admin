@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8080",
+            "url": "http://ezclaim.liuzisen.com",
             "description": "Generated server url"
         }
     ],
