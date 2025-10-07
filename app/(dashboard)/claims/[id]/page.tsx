@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
@@ -243,19 +244,21 @@ export default async function ClaimDetailPage({ params }: ClaimPageProps) {
                           href={photo.downloadUrl}
                           target="_blank"
                           rel="noreferrer"
-                          style={{ display: "block", borderRadius: "0.75rem", overflow: "hidden" }}
+                          style={{
+                            position: "relative",
+                            display: "block",
+                            borderRadius: "0.75rem",
+                            overflow: "hidden",
+                            aspectRatio: "4 / 3",
+                            background: "rgba(15, 23, 42, 0.05)",
+                          }}
                         >
-                          <img
+                          <Image
                             src={photo.downloadUrl}
                             alt={label}
-                            loading="lazy"
-                            style={{
-                              width: "100%",
-                              display: "block",
-                              aspectRatio: "4 / 3",
-                              objectFit: "cover",
-                              background: "rgba(15, 23, 42, 0.05)",
-                            }}
+                            fill
+                            sizes="(min-width: 768px) 200px, 100vw"
+                            style={{ objectFit: "cover" }}
                           />
                         </a>
                       )

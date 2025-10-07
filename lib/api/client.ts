@@ -16,9 +16,12 @@ export class ApiFetchError extends Error {
   }
 }
 
-export type ApiFetchOptions = RequestInit & {
+type ApiFetchBody = BodyInit | Record<string, unknown>;
+
+export type ApiFetchOptions = Omit<RequestInit, "body"> & {
   auth?: boolean;
   query?: Record<string, string | number | boolean | undefined | null>;
+  body?: ApiFetchBody;
 };
 
 export async function apiFetch<T>(
@@ -34,15 +37,17 @@ export async function apiFetch<T>(
   }
 
   const finalHeaders = new Headers(headers);
-  if (body && !(body instanceof FormData)) {
+  let requestBody = body;
+  if (requestBody && !(requestBody instanceof FormData)) {
     if (!finalHeaders.has("content-type")) {
       finalHeaders.set("content-type", "application/json");
     }
-    body = typeof body === "string" ? body : JSON.stringify(body);
+    requestBody = typeof requestBody === "string" ? requestBody : JSON.stringify(requestBody);
   }
 
   if (auth) {
-    const token = cookies().get(SESSION_COOKIE)?.value;
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
     if (!token) {
       throw new ApiFetchError("Not authenticated", 401);
     }
@@ -51,9 +56,9 @@ export async function apiFetch<T>(
 
   const response = await fetch(url, {
     ...init,
-    method: init.method || (body ? "POST" : "GET"),
+    method: init.method || (requestBody ? "POST" : "GET"),
     headers: finalHeaders,
-    body: body as BodyInit | null | undefined,
+    body: requestBody as BodyInit | null | undefined,
     cache: init.cache ?? "no-store",
   });
 
