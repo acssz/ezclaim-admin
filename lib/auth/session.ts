@@ -31,8 +31,9 @@ function decodeJwt(token: string): JwtPayload | null {
   }
 }
 
-export function getSession(): Session | null {
-  const token = cookies().get(SESSION_COOKIE)?.value;
+export async function getSession(): Promise<Session | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   const payload = decodeJwt(token);
   const scopes = payload?.scope ? String(payload.scope).split(" ") : [];
@@ -55,24 +56,24 @@ export function toClientSession(session: Session | null): ClientSession | null {
   };
 }
 
-export function requireSession(): Session {
-  const session = getSession();
+export async function requireSession(): Promise<Session> {
+  const session = await getSession();
   if (!session) {
     throw new Error("Authentication required");
   }
   return session;
 }
 
-export function setSession(token: string, maxAgeSeconds?: number) {
-  const cookieStore = cookies();
+export async function setSession(token: string, maxAgeSeconds?: number) {
+  const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, token, {
     ...SESSION_COOKIE_OPTIONS,
     maxAge: maxAgeSeconds ?? SESSION_COOKIE_OPTIONS.maxAge,
   });
 }
 
-export function clearSession() {
-  const cookieStore = cookies();
+export async function clearSession() {
+  const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
 }
 

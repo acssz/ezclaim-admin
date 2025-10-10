@@ -8,8 +8,8 @@ type PageProps = {
   };
 };
 
-export default function LoginPage({ searchParams }: PageProps) {
-  const session = getSession();
+export default async function LoginPage({ searchParams }: PageProps) {
+  const session = await getSession();
   if (session) {
     redirect(searchParams.redirect || "/claims");
   }
@@ -37,9 +37,9 @@ export default function LoginPage({ searchParams }: PageProps) {
           )}
         </div>
         <LoginForm />
-        <p className="text-muted" style={{ marginTop: "2rem", fontSize: "0.85rem" }}>
+        {/* <p className="text-muted" style={{ marginTop: "2rem", fontSize: "0.85rem" }}>
           Demo 账户：<strong>admin / ezclaim-password</strong>
-        </p>
+        </p> */}
       </div>
     </main>
   );

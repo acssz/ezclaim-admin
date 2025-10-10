@@ -26,7 +26,7 @@ export async function authenticate(_: AuthState, formData: FormData): Promise<Au
     });
     const expires = new Date(payload.expiresAt);
     const ttlSeconds = Math.max(60, Math.floor((expires.getTime() - Date.now()) / 1000));
-    setSession(payload.token, ttlSeconds);
+    await setSession(payload.token, ttlSeconds);
   } catch (error) {
     if (error instanceof ApiFetchError) {
       if (
@@ -47,7 +47,7 @@ export async function authenticate(_: AuthState, formData: FormData): Promise<Au
 }
 
 export async function executeLogout() {
-  clearSession();
+  await clearSession();
   revalidatePath("/");
   redirect("/login");
 }

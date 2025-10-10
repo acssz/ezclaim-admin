@@ -1,12 +1,12 @@
 import { DashboardLayoutShell } from "@/components/layout/DashboardLayoutShell";
 import { getSession, toClientSession } from "@/lib/auth/session";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = toClientSession(getSession());
+  const session = toClientSession(await getSession());
 
   return <DashboardLayoutShell session={session}>{children}</DashboardLayoutShell>;
 }

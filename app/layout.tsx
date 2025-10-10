@@ -11,12 +11,12 @@ export const metadata: Metadata = {
   description: "Administration console for EzClaim",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = toClientSession(getSession());
+  const session = toClientSession(await getSession());
 
   return (
     <html lang="en" className={inter.className}>
